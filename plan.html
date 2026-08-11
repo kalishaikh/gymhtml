@@ -245,36 +245,11 @@ footer{margin:26px 0 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;co
 
 <script>
 const TARGET = {kcal:2450, p:190, f:75, c:250};
-const WEEK = 2, TOTAL_WEEKS = 20;
+const WEEK = 3, TOTAL_WEEKS = 20;
 
 const DAYS = {
   mon:{
-    label:'MON', type:'push', session:'Upper Push',
-    focus:'Chest priority', vol:'27 sets · ~75 min',
-    cardio:'10k steps',
-    lifts:[
-      ['Incline barbell press','4 × 5–6','8','Upper chest. Heaviest, freshest — this is the priority lift.'],
-      ['Flat DB press','3 × 8–10','8','Chase depth, not load. Stretch below chest level.'],
-      ['Decline bench press','3 × 8–10','8','Lower chest. Swap back to dips if the wrist is fine.'],
-      ['Standing overhead press','3 × 6–8','8','Keep the wrist stacked over the forearm.'],
-      ['Incline DB fly (30°)','3 × 12–15','9','Soft elbow angle, held fixed. Light.'],
-      ['Cable lateral raise','4 × 12–15','9','Lead with the elbow. Stop at shoulder height.'],
-      ['Overhead triceps extension','3 × 10–12','9','Long head — only loads with the arm overhead.'],
-      ['Seated calf raise','4 × 15–20','9','2-second pause at the bottom. No bouncing.']
-    ],
-    note:'<b>Progression:</b> add 5 lb or 1 rep per lift vs last Monday — whichever comes easier. Rest 2–3 min on 1–4, 90 s on 5–8.',
-    meals:[
-      ['Breakfast','598 · 45P 20F 60C',[['Sourdough','2 slices'],['Avocado','½'],['Smoked salmon','~75 g'],['Egg whites, scrambled','5']]],
-      ['Lunch — prepped','728 · 49P 22F 82C',[['Chicken thigh (Sun prep)','150 g'],['Jasmine rice','1½ cups'],['Green beans','1½ cups'],['Olive oil','1 tsp']]],
-      ['Post-workout','345 · 49P 2F 33C',[['Protein shake','2 scoops'],['Banana','1 medium']]],
-      ['Dinner — she cooks','852 · 74P 21F 87C',[['Baked chicken','~220 g'],['Rice','1½ cups'],['Vegetables','2 cups'],['Butter','1 tsp']]]
-    ],
-    tot:{kcal:2523,p:217,f:65,c:262},
-    fnote:'Protein runs high today to offset yesterday. Fat sits under target — that\'s the avocado breakfast plus a lean chicken dinner. Fine.'
-  },
-
-  tue:{
-    label:'TUE', type:'lowA', session:'Lower A',
+    label:'MON', type:'lowA', session:'Lower A',
     focus:'Squat / knee-dominant', vol:'26 sets · ~75 min',
     cardio:'10k steps',
     lifts:[
@@ -287,7 +262,33 @@ const DAYS = {
       ['Hip abduction','3 × 15–20','9','Glute medius. Nothing else in the week loads it directly.'],
       ['Hanging leg raise','3 × 12–15','9','Bent knee. Tuck the tailbone — that\'s the ab part.']
     ],
-    note:'Optional 2-min primer: banded lateral walks, 2 × 15 steps each way before squatting. Wakes up glute med so it contributes to the squat.',
+    note:'<b>Swapped with Tuesday this week</b> — you did Upper Hypertrophy on Sunday, so chest and delts need the gap. Legs had 48 h since Saturday, and this is knee-dominant where Saturday was hip-dominant.<br><br><b>Week 3 progression:</b> add 5 lb or 1 rep per lift vs week 2.',
+    meals:[
+      ['Breakfast','598 · 45P 20F 60C',[['Sourdough','2 slices'],['Avocado','½'],['Smoked salmon','~75 g'],['Egg whites, scrambled','5']]],
+      ['Lunch — prepped','728 · 49P 22F 82C',[['Chicken thigh (Sun prep)','150 g'],['Jasmine rice','1½ cups'],['Green beans','1½ cups'],['Olive oil','1 tsp']]],
+      ['Post-workout','345 · 49P 2F 33C',[['Protein shake','2 scoops'],['Banana','1 medium']]],
+      ['Dinner — she cooks','852 · 74P 21F 87C',[['Baked chicken','~220 g'],['Rice','1½ cups'],['Vegetables','2 cups'],['Butter','1 tsp']]]
+    ],
+    tot:{kcal:2523,p:217,f:65,c:262},
+    fnote:'Protein runs high today to offset yesterday. Fat sits under target — that\'s the avocado breakfast plus a lean chicken dinner. Fine.'
+  },
+
+  tue:{
+    label:'TUE', type:'push', session:'Upper Push',
+    focus:'Chest priority', vol:'30 sets · ~80 min',
+    cardio:'10k steps',
+    lifts:[
+      ['Incline barbell press','4 × 5–6','8','Upper chest. Heaviest, freshest — this is the priority lift.'],
+      ['Flat DB press','3 × 8–10','8','Chase depth, not load. Stretch below chest level.'],
+      ['Decline bench press','3 × 8–10','8','Full range now the wrist is fine. Bar to lower chest, stacked over the forearm.'],
+      ['Standing overhead press','3 × 6–8','8','Keep the wrist stacked over the forearm.'],
+      ['Incline DB fly (30°)','3 × 12–15','9','Soft elbow angle, held fixed. Light.'],
+      ['Cable lateral raise','4 × 12–15','9','Lead with the elbow. Stop at shoulder height.'],
+      ['Overhead triceps extension','3 × 10–12','9','Long head — only loads with the arm overhead.'],
+      ['Cable crunch','3 × 12–15','9','NEW. Curl the spine, hips locked. If the hips move it\'s a hip flexor exercise.'],
+      ['Seated calf raise','4 × 15–20','9','2-second pause at the bottom. No bouncing.']
+    ],
+    note:'<b>Swapped with Monday this week.</b> Rest 2–3 min on 1–4, 90 s on 5–9.<br><br>If dips and decline both feel good, run them as separate exercises — 3 × 8–10 each, full rest — rather than supersetting. Keep dips at bodyweight another 2 weeks before adding a belt.',
     meals:[
       ['Breakfast','456 · 41P 12F 47C',[['Egg whites, scrambled','4'],['Greek yogurt','1 cup'],['Granola','⅓ cup'],['Frozen berries','1 cup']]],
       ['Lunch — prepped','696 · 52P 18F 79C',[['Chicken thigh (Sun prep)','150 g'],['Jasmine rice','1¼ cups'],['Green peas','1 cup']]],
@@ -377,6 +378,7 @@ const DAYS = {
       ['Lateral raise — last set drop','4 × 15','10','15 lb → fail → 10 lb → fail. Set the 10s out beforehand.'],
       ['Reverse pec-deck','4 × 15','9',''],
       ['Cable fly — low / mid / high pulley','3 × 15 each','9','Rest 90 s between the three. Same pec, three angles — not a giant set.'],
+      ['Weighted plank or ab wheel','2 × 30–45 s','—','NEW. Anti-extension — different function from the crunch and leg raise.'],
       ['Seated calf raise','3 × 20','9','Leg press calf press if no seated machine.'],
       ['Cable curl ⇄ pushdown','3 × 12–15 each','9','True superset — antagonists, so no rest between the pair.']
     ],

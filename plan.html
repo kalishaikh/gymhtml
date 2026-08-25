@@ -1,495 +1,191 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Recomp — Day View</title>
+<title>Training</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --ink:#131A24;
-  --ink-2:#39434F;
-  --mute:#7A8592;
-  --line:#D3D7DC;
-  --paper:#ECEEF1;
-  --card:#FFFFFF;
-  --signal:#C8102E;
-  --food:#1F6F5C;
-  --rest:#6B5CA5;
-  --r:3px;
+  --ink:#13161A; --mute:#767E88; --line:#D6DAE0;
+  --paper:#EDEFF2; --card:#FFF; --hot:#C8102E;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{
   background:var(--paper);color:var(--ink);
-  font-family:'IBM Plex Sans',system-ui,sans-serif;
-  font-size:15px;line-height:1.5;
-  padding-bottom:56px;
+  font-family:'Archivo',system-ui,sans-serif;
+  font-size:15px;line-height:1.4;padding-bottom:40px;
 }
-.wrap{max-width:860px;margin:0 auto;padding:0 14px}
+.wrap{max-width:760px;margin:0 auto;padding:0 12px}
 
-/* ---------- masthead ---------- */
-header{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:20}
-.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:14px 0 10px}
-.mast h1{
-  font-family:'Archivo',sans-serif;font-weight:800;
-  font-size:clamp(20px,5.4vw,30px);letter-spacing:-.03em;line-height:.95;text-transform:uppercase;
-}
-.mast h1 em{font-style:normal;color:var(--signal)}
-.wk{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);text-align:right;line-height:1.4;white-space:nowrap}
-.wk b{display:block;color:var(--ink);font-size:13px;font-weight:600}
+header{border-bottom:2px solid var(--ink);background:var(--paper);position:sticky;top:0;z-index:9}
+.mast{display:flex;align-items:baseline;justify-content:space-between;padding:12px 0 8px}
+h1{font-weight:800;font-size:19px;letter-spacing:-.02em;text-transform:uppercase}
+.wk{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute)}
 
-/* progress ticker */
-.ticker{display:flex;gap:2px;padding-bottom:10px}
-.ticker i{flex:1;height:4px;background:var(--line);border-radius:1px}
-.ticker i.on{background:var(--ink)}
-.ticker i.now{background:var(--signal)}
-
-/* ---------- day rail (signature) ---------- */
-.rail{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding-bottom:12px}
+.rail{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding-bottom:10px}
 .rail button{
-  font:inherit;cursor:pointer;background:var(--card);
-  border:1px solid var(--line);border-radius:var(--r);
-  padding:7px 2px 8px;text-align:center;color:var(--ink-2);
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  transition:.12s;
+  font:inherit;font-weight:700;font-size:11px;letter-spacing:.06em;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:9px 0;color:var(--ink);transition:.1s;
 }
-.rail button:hover{border-color:var(--ink-2)}
-.rail .d{font-family:'Archivo',sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em}
-.rail .dot{width:100%;height:3px;border-radius:2px;background:var(--ink-2);opacity:.35}
-.rail .dot.push,.rail .dot.pull,.rail .dot.hyp{background:var(--signal)}
-.rail .dot.lowA,.rail .dot.lowB{background:var(--ink)}
-.rail .dot.ball{background:var(--food)}
-.rail .dot.rest{background:var(--rest)}
+.rail button.today{box-shadow:inset 0 -3px 0 var(--hot)}
 .rail button[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
-.rail button[aria-selected=true] .dot{opacity:1}
-.rail button.today .d::after{content:'•';color:var(--signal);margin-left:2px}
-.rail button[aria-selected=true].today .d::after{color:#fff}
-.rail button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.rail button:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 
-/* ---------- section head ---------- */
-.head{display:flex;align-items:baseline;gap:10px;margin:22px 0 10px}
-.head h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;letter-spacing:.1em;text-transform:uppercase}
-.head .sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);margin-left:auto;text-align:right}
-.head::before{content:'';width:9px;height:9px;background:var(--signal);flex:none;align-self:center}
-.head.eat::before{background:var(--food)}
+h2{font-weight:800;font-size:16px;letter-spacing:.08em;text-transform:uppercase;margin:20px 0 9px}
+h2 span{float:right;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:400;
+  letter-spacing:0;text-transform:none;color:var(--mute)}
 
-/* ---------- cards / tables ---------- */
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table{width:100%;border-collapse:collapse;background:var(--card);
+  border:1px solid var(--line);border-radius:3px;overflow:hidden}
+th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}
 tr:last-child td{border-bottom:0}
-thead th{
-  font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--mute);font-weight:500;background:#F6F7F9;
+thead th{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:400;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--mute);background:#F5F6F8;padding:7px 9px}
+td.n{width:24px;color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:12px}
+td.ex{font-weight:600}
+td.sr,td.rt{font-family:'IBM Plex Mono',monospace;font-size:13px;white-space:nowrap}
+td.rt{color:var(--mute);text-align:right}
+td.rp{width:34px}
+.rp b{display:inline-block;min-width:26px;text-align:center;padding:2px 5px;border-radius:2px;
+  background:#E9ECEF;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500}
+.rp b.x{background:var(--hot);color:#fff}
+
+.off{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:22px 14px;text-align:center;font-family:'IBM Plex Mono',monospace;
+  font-size:13px;color:var(--mute)}
+
+.leg{margin-top:22px}
+.leg table{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.leg td{padding:7px 9px}
+.leg td:first-child{width:40px;font-weight:500}
+
+@media(max-width:540px){
+  th,td{padding:10px 7px}
+  td.rt{display:none}
+  thead th.rt{display:none}
 }
-.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
-td.n{width:26px;color:var(--mute);font-family:'IBM Plex Mono',monospace;font-size:12px}
-td.ex{font-weight:500}
-td.ex small{display:block;color:var(--mute);font-weight:400;font-size:12.5px;margin-top:2px;line-height:1.35}
-.rpe{display:inline-block;min-width:24px;text-align:center;padding:1px 5px;border-radius:2px;background:#EEF0F3;font-family:'IBM Plex Mono',monospace;font-size:12px}
-.rpe.hard{background:var(--signal);color:#fff}
-
-/* meals */
-.meal{border-bottom:1px solid var(--line)}
-.meal:last-child{border-bottom:0}
-.meal>.mh{display:flex;align-items:center;gap:8px;padding:9px 10px;background:#F6F7F9}
-.mh h3{font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
-.mh .mm{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);white-space:nowrap}
-.items{list-style:none;padding:4px 10px 9px}
-.items li{display:flex;gap:10px;padding:3px 0;font-size:14.5px}
-.items li span:first-child{flex:1}
-.items li .q{font-family:'IBM Plex Mono',monospace;color:var(--ink-2);font-size:13px;white-space:nowrap}
-
-/* macro bars */
-.macros{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 10px;margin-bottom:10px}
-.mrow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
-.mrow:last-child{margin-bottom:0}
-.mrow .lab{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);width:52px;flex:none}
-.bar{flex:1;height:9px;background:#EEF0F3;border-radius:5px;position:relative;overflow:hidden}
-.bar i{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--ink)}
-.bar.p i{background:var(--food)}
-.bar.f i{background:var(--signal)}
-.bar.c i{background:#C08A2E}
-.mrow .val{font-family:'IBM Plex Mono',monospace;font-size:12px;width:86px;text-align:right;flex:none;font-variant-numeric:tabular-nums}
-.mrow .val u{text-decoration:none;color:var(--mute)}
-
-/* notes */
-.note{background:#FFF;border:1px solid var(--line);border-left:3px solid var(--signal);border-radius:var(--r);padding:10px 12px;margin-top:10px;font-size:14px}
-.note.eat{border-left-color:var(--food)}
-.note b{font-weight:600}
-.flexday{background:#FFF;border:1px solid var(--line);border-left:3px solid var(--rest);border-radius:var(--r);padding:12px;font-size:14.5px}
-.flexday ul{margin:7px 0 0 18px}
-.flexday li{margin:3px 0}
-
-/* reference */
-details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-top:8px}
-summary{
-  cursor:pointer;padding:10px 12px;font-family:'Archivo',sans-serif;
-  font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
-}
-summary::-webkit-details-marker{display:none}
-summary::after{content:'+';float:right;color:var(--mute);font-family:'IBM Plex Mono',monospace}
-details[open] summary::after{content:'–'}
-.dbody{padding:0 12px 12px;font-size:14.5px}
-.dbody table{margin-top:4px;border-top:1px solid var(--line)}
-.dbody p{margin:6px 0}
-.dbody ul{margin:6px 0 6px 18px}
-.dbody li{margin:3px 0}
-
-footer{margin:26px 0 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);text-align:center;line-height:1.6}
-
-@media(max-width:560px){
-  body{font-size:14.5px}
-  th,td{padding:8px 8px}
-  .rail button{padding:6px 1px 7px}
-  .mrow .val{width:78px;font-size:11.5px}
-}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <header>
   <div class="wrap">
-    <div class="mast">
-      <h1>Recomp <em>/</em> Day View</h1>
-      <div class="wk"><b id="today"></b><span id="wknum"></span></div>
-    </div>
-    <div class="ticker" id="ticker"></div>
+    <div class="mast"><h1>Training</h1><span class="wk" id="wk"></span></div>
     <div class="rail" id="rail" role="tablist"></div>
   </div>
 </header>
 
 <main class="wrap" id="main"></main>
 
-<div class="wrap">
-  <div class="head" style="margin-top:26px"><h2>Reference</h2></div>
-
-  <details>
-    <summary>RPE — what the numbers mean</summary>
-    <div class="dbody">
-      <p>RPE is how far you stopped from failure, not how heavy the weight is.</p>
-      <table>
-        <tr><td class="num">10</td><td>0 reps left — total failure</td></tr>
-        <tr><td class="num">9</td><td>1 rep left</td></tr>
-        <tr><td class="num">8</td><td>2 reps left</td></tr>
-        <tr><td class="num">7</td><td>3 reps left</td></tr>
-      </table>
-      <p style="margin-top:8px">Heavy compounds → stop at RPE 8. Isolation → RPE 9. The only RPE 10 all week is Saturday's lateral raise drop set.</p>
-    </div>
-  </details>
-
-  <details>
-    <summary>Flex day rules</summary>
-    <div class="dbody">
-      <ul>
-        <li><b>150 g protein floor</b> — non-negotiable.</li>
-        <li><b>One unbudgeted meal</b>, not a whole unbudgeted day.</li>
-        <li><b>Ceiling ~3,500 kcal.</b> You won't count it, you'll feel it.</li>
-        <li>Alcohol comes out of the flex budget, not on top of it.</li>
-      </ul>
-      <p>Two blowout days erases the entire week's deficit. This is the single biggest failure point in the plan.</p>
-    </div>
-  </details>
-
-  <details>
-    <summary>Morning stretch — 9 min</summary>
-    <div class="dbody">
-      <p>2 min light movement first (arm circles, leg swings, 20 bodyweight squats).</p>
-      <table>
-        <tr><td class="ex">Couch stretch</td><td class="num">60 s/side</td></tr>
-        <tr><td class="ex">Doorway pec — low / mid / high</td><td class="num">30 s each</td></tr>
-        <tr><td class="ex">Thoracic extension over chair</td><td class="num">60 s</td></tr>
-        <tr><td class="ex">Kneeling lat stretch</td><td class="num">45 s/side</td></tr>
-        <tr><td class="ex">Knee-to-wall ankle</td><td class="num">45 s/side</td></tr>
-        <tr><td class="ex">90/90 hip</td><td class="num">60 s/side</td></tr>
-        <tr><td class="ex">Frog / adductor rock-back</td><td class="num">45 s</td></tr>
-      </table>
-      <p style="margin-top:8px"><b>Sunday:</b> double the couch stretch and T-spine. No deep spinal flexion in the first hour after waking.</p>
-    </div>
-  </details>
-
-  <details>
-    <summary>Tracking &amp; adjustment</summary>
-    <div class="dbody">
-      <p>Weigh every morning, use the <b>7-day rolling average only</b>. Tape waist / shoulders / calves Monday mornings. Photos every 2 weeks.</p>
-      <table>
-        <thead><tr><th>Over 2 weeks</th><th>Do this</th></tr></thead>
-        <tr><td>Lost 0.5–0.7 kg</td><td>On track — change nothing</td></tr>
-        <tr><td>Lost &gt;0.9 kg</td><td>Too fast — add 150 kcal carbs</td></tr>
-        <tr><td>Lost &lt;0.25 kg, waist flat</td><td>Stalled — one rung of cardio</td></tr>
-        <tr><td>Lost &lt;0.25 kg, waist down</td><td>Recomping — change nothing</td></tr>
-        <tr><td>Strength down 2 wks</td><td>Eat more or add a rest day</td></tr>
-      </table>
-      <p style="margin-top:8px">Never cut calories and add cardio in the same adjustment.</p>
-    </div>
-  </details>
-
-  <details>
-    <summary>Cardio ladder — climb one rung at a time</summary>
-    <div class="dbody">
-      <ul>
-        <li>Steps 10k → 12k</li>
-        <li>Second zone-2 bike (Tue or Fri, 30 min, after lifting)</li>
-        <li>Sunday bike → 75 min</li>
-        <li>15 min incline walk after two lifting sessions</li>
-      </ul>
-      <p>Only when genuinely stalled. Adding cardio beats cutting calories — it doesn't compromise recovery or training.</p>
-    </div>
-  </details>
-
-  <footer>
-    197 lb → 183–187 lb @ 15 % · 20 weeks<br>
-    Targets: 2,450 kcal · 190 P · 75 F · 250 C
-  </footer>
+<div class="wrap leg">
+  <h2>RPE</h2>
+  <table>
+    <tr><td>10</td><td>0 reps left</td></tr>
+    <tr><td>9</td><td>1 rep left</td></tr>
+    <tr><td>8</td><td>2 reps left</td></tr>
+    <tr><td>7</td><td>3 reps left</td></tr>
+  </table>
 </div>
 
 <script>
-const TARGET = {kcal:2450, p:190, f:75, c:250};
-const WEEK = 4, TOTAL_WEEKS = 20;
+const WEEK=5, TOTAL=20;
 
-const DAYS = {
-  mon:{
-    label:'MON', type:'push', session:'Upper Push',
-    focus:'Chest priority', vol:'30 sets · ~80 min',
-    cardio:'10k steps',
-    lifts:[
-      ['Incline barbell press','4 × 5–6','8','Upper chest. Heaviest, freshest — this is the priority lift.'],
-      ['Flat DB press','3 × 8–10','8','Chase depth, not load. Stretch below chest level.'],
-      ['Decline bench press','3 × 8–10','8','Bar to lower chest, stacked over the forearm. No dips until October.'],
-      ['Standing overhead press','3 × 6–8','8','Feet hip-width, no leg drive. Glutes and abs braced.'],
-      ['Incline DB fly (30°)','3 × 12–15','9','Soft elbow angle, held fixed. Light.'],
-      ['Cable lateral raise','4 × 12–15','9','Lead with the elbow. Stop at shoulder height.'],
-      ['Overhead triceps extension','3 × 10–12','9','Long head — only loads with the arm overhead.'],
-      ['Cable crunch','3 × 12–15','9','Curl the spine, hips locked. If the hips move it\'s a hip flexor exercise.'],
-      ['Seated calf raise','4 × 15–20','9','2-second pause at the bottom. No bouncing.']
-    ],
-    note:'<b>Back on the normal rotation</b> — first clean week since the schedule shuffled. Rest 2–3 min on 1–4, 90 s on 5–9.<br><br><b>Week 4 progression:</b> add 5 lb or 1 rep per lift vs week 3. Last week of Block 1.',
-    meals:[
-      ['Breakfast','598 · 45P 20F 60C',[['Sourdough','2 slices'],['Avocado','½'],['Smoked salmon','~75 g'],['Egg whites, scrambled','5']]],
-      ['Lunch — prepped','728 · 49P 22F 82C',[['Chicken thigh (Sun prep)','150 g'],['Jasmine rice','1½ cups'],['Green beans','1½ cups'],['Olive oil','1 tsp']]],
-      ['Post-workout','345 · 49P 2F 33C',[['Protein shake','2 scoops'],['Banana','1 medium']]],
-      ['Dinner — she cooks','852 · 74P 21F 87C',[['Baked chicken','~220 g'],['Rice','1½ cups'],['Vegetables','2 cups'],['Butter','1 tsp']]]
-    ],
-    tot:{kcal:2523,p:217,f:65,c:262},
-    fnote:'Protein runs high today to offset yesterday. Fat sits under target — that\'s the avocado breakfast plus a lean chicken dinner. Fine.'
-  },
+const D={
+mon:{t:'Upper Push',v:'32 sets',l:[
+['Incline barbell press','5 × 5–6','8','3 min'],
+['Flat DB press','4 × 8–10','8','2 min'],
+['Decline bench press','3 × 8–10','8','2 min'],
+['Standing overhead press','3 × 6–8','8','2 min'],
+['Incline DB fly (30°)','3 × 12–15','9','90 s'],
+['Cable lateral raise','4 × 12–15','9','90 s'],
+['Overhead triceps extension','3 × 10–12','9','90 s'],
+['Cable crunch','3 × 12–15','9','90 s'],
+['Seated calf raise','4 × 15–20','9','90 s']]},
 
-  tue:{
-    label:'TUE', type:'lowA', session:'Lower A',
-    focus:'Squat / knee-dominant', vol:'26 sets · ~75 min',
-    cardio:'10k steps',
-    lifts:[
-      ['Back squat','4 × 5','8','~80 % of max. Heaviest lift of the week.'],
-      ['Bulgarian split squat','3 × 8–10 /leg','8','Lead with the weaker side, match reps on the strong one.'],
-      ['Leg press','3 × 12','8','Safe place to be fatigued.'],
-      ['Leg curl','3 × 12','9','Knee-flexion hamstring. RDLs cover the hip side Friday.'],
-      ['Standing calf raise (heavy)','4 × 10–12','9','Straight knee = gastrocnemius. 2-sec bottom pause.'],
-      ['DB lateral raise (light)','3 × 20','9','10–15 lb. Reps 16–20 should burn.'],
-      ['Hip abduction','3 × 15–20','9','Glute medius. Nothing else in the week loads it directly.'],
-      ['Hanging leg raise','3 × 12–15','9','Bent knee. Tuck the tailbone — that\'s the ab part.']
-    ],
-    note:'Optional 2-min primer: banded lateral walks, 2 × 15 steps each way before squatting. Wakes up glute med so it contributes to the squat.<br><br>If the deep-glute tightness from Bulgarians comes back one-sided, that\'s a real asymmetry — lead with the weaker leg every set.',
-    meals:[
-      ['Breakfast','456 · 41P 12F 47C',[['Egg whites, scrambled','4'],['Greek yogurt','1 cup'],['Granola','⅓ cup'],['Frozen berries','1 cup']]],
-      ['Lunch — prepped','696 · 52P 18F 79C',[['Chicken thigh (Sun prep)','150 g'],['Jasmine rice','1¼ cups'],['Green peas','1 cup']]],
-      ['Post-workout','335 · 49P 2F 27C',[['Protein shake','2 scoops'],['Apple','1 medium'],['Rice cakes','2']]],
-      ['Dinner','811 · 60P 30F 74C',[['Salmon','200 g'],['Quinoa','1½ cups'],['Green beans','1½ cups']]]
-    ],
-    tot:{kcal:2298,p:202,f:62,c:227},
-    fnote:'Skin off the thighs before cooking — saves ~5 g fat per portion. Salmon: skin-side down in a hot dry pan, 5 min, flip 2.'
-  },
+tue:{t:'Lower A',v:'28 sets',l:[
+['Back squat','5 × 5','8','3 min'],
+['Bulgarian split squat','4 × 8–10 /leg','8','2 min'],
+['Leg press','3 × 12','8','2 min'],
+['Leg curl','3 × 12','9','90 s'],
+['Standing calf raise','4 × 10–12','9','90 s'],
+['DB lateral raise','3 × 20','9','60 s'],
+['Hip abduction','3 × 15–20','9','60 s'],
+['Hanging leg raise','3 × 12–15','9','60 s']]},
 
-  wed:{
-    label:'WED', type:'pull', session:'Upper Pull',
-    focus:'Back + rear delts', vol:'29 sets · ~75 min',
-    cardio:'Swim 20–25 min easy, post-lift',
-    lifts:[
-      ['Pull-up (bodyweight)','4 × 5','8','No added weight. Stop 2 short. 3 min rest — actually time it.'],
-      ['Chest-supported row','4 × 8–10','8','The pad stops you cheating with the lower back.'],
-      ['Single-arm DB row','3 × 10–12','8',''],
-      ['Lat pulldown','3 × 12','9',''],
-      ['Face pull','4 × 15–20','9','Elbows HIGH, hands finish beside the ears. This is rear delt work.'],
-      ['Reverse pec-deck','3 × 15','9','Or chest-supported rear delt fly if the machine is taken.'],
-      ['Cable lateral raise','3 × 15','9',''],
-      ['Incline DB curl','3 × 10–12','9','Arm behind torso = long-head stretch. Best curl variation.'],
-      ['Hammer curl','2 × 12','9','Neutral grip — brachialis, pushes the biceps up.']
-    ],
-    note:'Try a shoulder-width or neutral grip on the pull-ups — usually worth 1–3 extra reps and easier on the elbows. <b>7 of your 14 weekly rear-delt sets happen today.</b>',
-    meals:[
-      ['Breakfast','577 · 42P 18F 63C',[['Whole eggs','2'],['Egg whites','4'],['Sourdough','2 slices'],['Olive oil (pan)','1 tsp'],['Spinach','1 cup']]],
-      ['Lunch — OFFICE','~650 · 48P 28F 50C',[['Chicken shawarma or salad','—'],['Garlic sauce','ask for light'],['Dressing','on the side']]],
-      ['Post-workout','345 · 49P 2F 33C',[['Protein shake','2 scoops'],['Banana','1 medium']]],
-      ['Dinner','595 · 58P 8F 77C',[['Cod','225 g'],['Roasted potatoes','250 g'],['Broccoli','2 cups'],['Olive oil','1 tsp']]]
-    ],
-    tot:{kcal:2167,p:197,f:56,c:223},
-    fnote:'Built ~200 kcal light because office portions vary. Toum (garlic sauce) is nearly pure oil — a big scoop is 150–200 kcal. Ask for it light or take hot sauce.'
-  },
+wed:{t:'Upper Pull',v:'30 sets',l:[
+['Pull-up','4 × 5–6','8','3 min'],
+['Chest-supported row','5 × 8–10','8','2 min'],
+['Single-arm DB row','3 × 10–12','8','90 s'],
+['Lat pulldown','3 × 12','9','90 s'],
+['Face pull','4 × 15–20','9','90 s'],
+['Reverse pec-deck','3 × 15','9','90 s'],
+['Cable lateral raise','3 × 15','9','90 s'],
+['Incline DB curl','3 × 10–12','9','90 s'],
+['Hammer curl','2 × 12','9','90 s']]},
 
-  thu:{
-    label:'THU', type:'ball', session:'Basketball',
-    focus:'Conditioning — no lift', vol:'60–90 min',
-    cardio:'Fallback: 3 km run, or 25 min bike intervals (1 hard / 2 easy × 8)',
-    lifts:[],
-    note:'Sits between the two leg days on purpose. Play hard — this <b>is</b> your conditioning, don\'t stack cardio on top of it.',
-    meals:[
-      ['Breakfast','647 · 39P 17F 89C',[['Granola','½ cup'],['Greek yogurt','1½ cups'],['Banana','1 medium'],['Frozen berries','1 cup']]],
-      ['Lunch — OFFICE','~750 · 50P 25F 80C',[['Shawarma plate over rice','—'],['','carbs matter today — take the plate, not the wrap']]],
-      ['Pre-game (60 min out)','209 · 6P 1F 45C',[['Bagel','½'],['Honey','1 tbsp']]],
-      ['Post-game','350 · 48P 2F 33C',[['Protein shake','2 scoops'],['Gatorade','2 cups']]],
-      ['Dinner','614 · 69P 12F 52C',[['Chicken breast','200 g'],['Jasmine rice','¾ cup'],['Stir-fry vegetables','2 cups'],['Sesame oil','1 tsp']]]
-    ],
-    tot:{kcal:2570,p:212,f:57,c:299},
-    fnote:'~120 kcal higher and deliberately high-carb, low-fat. Glycogen for the court; fat digests too slowly to sit well pre-game.'
-  },
+thu:{t:'Basketball',v:'60–90 min',l:[]},
 
-  fri:{
-    label:'FRI', type:'lowB', session:'Lower B',
-    focus:'Hinge / hip-dominant', vol:'26 sets · ~70 min',
-    cardio:'10k steps',
-    lifts:[
-      ['Romanian deadlift','4 × 6–8','8','Most spinally loaded lift of the week. Hinge, bar close, neutral spine.'],
-      ['DB hip thrust','3 × 10–12','8','Tuck the tailbone at the top. Stop when the torso is parallel.'],
-      ['Walking lunge','3 × 12 /leg','8',''],
-      ['Leg extension','3 × 15','9','Small quad top-up so they aren\'t dormant for six days.'],
-      ['Standing calf raise','3 × 15–20','9',''],
-      ['Leg press calf press','3 × 15','9','2-sec bottom pause, slight knee bend.'],
-      ['Copenhagen plank','2 × 15 s /side','—','Start small and mean it. Six days before basketball is the point.'],
-      ['Bent-over rear delt fly','3 × 20','9','Very light. Mid-back means your elbows dropped.'],
-      ['Cable woodchop','3 × 12 /side','8','']
-    ],
-    note:'<b>Lift before you go out.</b> Alcohol blunts protein synthesis for ~24 h — training first keeps the session clean and the dinner lands as your post-lift meal.',
-    meals:[
-      ['Breakfast','557 · 40P 13F 70C',[['Whole eggs','2'],['Egg whites','4'],['Sourdough','2 slices'],['Frozen berries','1 cup']]],
-      ['Lunch — assembly','554 · 30P 13F 75C',[['Salmon, flaked (leftover)','100 g'],['Salad greens','3 cups'],['Jasmine rice','1½ cups'],['Lemon + vinegar','—']]],
-      ['Post-workout','335 · 49P 2F 27C',[['Protein shake','2 scoops'],['Apple','1 medium'],['Rice cakes','2']]],
-      ['Dinner','758 · 64P 23F 73C',[['Chicken thigh (Sun prep)','200 g'],['Sweet potato','250 g'],['Green peas','1 cup']]]
-    ],
-    tot:{kcal:2204,p:183,f:51,c:245},
-    fnote:'Thighs are already cooked — glaze and reheat rather than roasting again. Harissa + honey, or soy-ginger-garlic.'
-  },
+fri:{t:'Lower B',v:'28 sets',l:[
+['Romanian deadlift','5 × 6–8','8','3 min'],
+['DB hip thrust','4 × 10–12','8','2 min'],
+['Walking lunge','3 × 12 /leg','8','90 s'],
+['Leg extension','3 × 15','9','90 s'],
+['Standing calf raise','3 × 15–20','9','90 s'],
+['Leg press calf press','3 × 15','9','90 s'],
+['Copenhagen plank','2 × 20 s /side','—','60 s'],
+['Bent-over rear delt fly','3 × 20','9','60 s'],
+['Cable woodchop','3 × 12 /side','8','60 s']]},
 
-  sat:{
-    label:'SAT', type:'hyp', session:'Upper Hypertrophy',
-    focus:'Delt + chest volume', vol:'25 sets · ~65 min',
-    cardio:'Flex day',
-    lifts:[
-      ['Seated DB shoulder press','4 × 10–12','9','Bench at 80–85°, not fully vertical.'],
-      ['Incline DB press','4 × 10–12','9',''],
-      ['Lateral raise — last set drop','4 × 15','10','15 lb → fail → 10 lb → fail. Set the 10s out beforehand.'],
-      ['Reverse pec-deck','4 × 15','9',''],
-      ['Cable fly — low / mid / high pulley','3 × 15 each','9','Rest 90 s between the three. Same pec, three angles — not a giant set.'],
-      ['Weighted plank or ab wheel','2 × 30–45 s','—','NEW. Anti-extension — different function from the crunch and leg raise.'],
-      ['Seated calf raise','3 × 20','9','Leg press calf press if no seated machine.'],
-      ['Cable curl ⇄ pushdown','3 × 12–15 each','9','True superset — antagonists, so no rest between the pair.']
-    ],
-    note:'The worst-<em>feeling</em> session of the week and the least demanding. RPE 9 throughout, 90 s rests, high reps — that\'s metabolic stress, which is unpleasant and not dangerous. Monday and Tuesday are objectively harder.',
-    flex:true,
-    flexnote:'Chicken balls go here — breaded and fried, ~270 kcal / 15 g fat per 100 g for only 12 g protein. Costs you nothing on a flex day, doesn\'t fit a weekday.'
-  },
+sat:{t:'Upper Hypertrophy',v:'27 sets',l:[
+['Seated DB shoulder press','5 × 10–12','9','90 s'],
+['Incline DB press','5 × 10–12','9','90 s'],
+['Lateral raise (drop set last)','4 × 15','10','90 s'],
+['Reverse pec-deck','4 × 15','9','90 s'],
+['Cable fly — low pulley','1 × 15','9','90 s'],
+['Cable fly — mid pulley','1 × 15','9','90 s'],
+['Cable fly — high pulley','1 × 15','9','90 s'],
+['Weighted plank','2 × 30–45 s','—','60 s'],
+['Seated calf raise','3 × 20','9','90 s'],
+['Cable curl ⇄ pushdown','3 × 12–15','9','90 s']]},
 
-  sun:{
-    label:'SUN', type:'rest', session:'Rest',
-    focus:'Recovery — the adaptation happens here', vol:'—',
-    cardio:'Bike 45–60 min zone 2 (conversational pace)',
-    lifts:[],
-    note:'The only full rest day. If the urge to add cardio is a fat-loss itch, the deficit is already handled by the food. A 45-min walk scratches restlessness without spending your adjustment lever.<br><br><b>Also today:</b> 20 min prep — skin off and roast the thighs, cook 4 cups of rice, portion into three containers. That makes Mon/Tue/Fri lunches assembly-only.',
-    flex:true,
-    flexnote:'Double the couch stretch and thoracic extension this morning — hours in hip flexion on the bike is the worst posture of your week.'
-  }
+sun:{t:'Rest',v:'',l:[]}
 };
 
-const ORDER = ['mon','tue','wed','thu','fri','sat','sun'];
-const JS2KEY = ['sun','mon','tue','wed','thu','fri','sat'];
+const O=['mon','tue','wed','thu','fri','sat','sun'];
+const K=['sun','mon','tue','wed','thu','fri','sat'];
+const today=K[new Date().getDay()];
+let act=today;
 
-const now = new Date();
-const todayKey = JS2KEY[now.getDay()];
-let active = todayKey;
+document.getElementById('wk').textContent=`wk ${WEEK}/${TOTAL}`;
 
-document.getElementById('today').textContent =
-  now.toLocaleDateString(undefined,{weekday:'long', month:'short', day:'numeric'});
-document.getElementById('wknum').textContent = `week ${WEEK} of ${TOTAL_WEEKS}`;
-
-const tick = document.getElementById('ticker');
-for(let i=1;i<=TOTAL_WEEKS;i++){
-  const s=document.createElement('i');
-  if(i<WEEK) s.className='on';
-  if(i===WEEK) s.className='now';
-  tick.appendChild(s);
-}
-
-const rail = document.getElementById('rail');
-ORDER.forEach(k=>{
-  const d=DAYS[k];
+const rail=document.getElementById('rail');
+O.forEach(k=>{
   const b=document.createElement('button');
-  b.type='button'; b.setAttribute('role','tab');
-  b.className = k===todayKey ? 'today' : '';
-  b.innerHTML=`<span class="d">${d.label}</span><span class="dot ${d.type}"></span>`;
-  b.onclick=()=>{active=k;render();};
+  b.type='button';b.setAttribute('role','tab');
+  b.textContent=k.toUpperCase();
+  if(k===today)b.className='today';
+  b.onclick=()=>{act=k;draw()};
   rail.appendChild(b);
 });
 
-function bar(lab,val,target,cls){
-  const pct=Math.min(100,Math.round(val/target*100));
-  return `<div class="mrow">
-    <span class="lab">${lab}</span>
-    <span class="bar ${cls}"><i style="width:${pct}%"></i></span>
-    <span class="val">${val} <u>/ ${target}</u></span>
-  </div>`;
-}
-
-function render(){
-  [...rail.children].forEach((b,i)=>b.setAttribute('aria-selected', ORDER[i]===active));
-  const d=DAYS[active];
-  let h='';
-
-  // ---- TRAIN ----
-  h+=`<div class="head"><h2>${d.session}</h2><span class="sub">${d.focus}<br>${d.vol}</span></div>`;
-  if(d.lifts.length){
-    h+=`<div class="card"><table>
-      <thead><tr><th></th><th>Exercise</th><th>Sets × reps</th><th>RPE</th></tr></thead><tbody>`;
-    d.lifts.forEach((l,i)=>{
-      const hard = l[2]==='10';
-      h+=`<tr><td class="n">${i+1}</td>
-        <td class="ex">${l[0]}${l[3]?`<small>${l[3]}</small>`:''}</td>
-        <td class="num">${l[1]}</td>
-        <td><span class="rpe${hard?' hard':''}">${l[2]}</span></td></tr>`;
+function draw(){
+  [...rail.children].forEach((b,i)=>b.setAttribute('aria-selected',O[i]===act));
+  const d=D[act];
+  let h=`<h2>${d.t}${d.v?`<span>${d.v}</span>`:''}</h2>`;
+  if(d.l.length){
+    h+=`<table><thead><tr><th></th><th>Exercise</th><th>Sets × reps</th><th>RPE</th><th class="rt">Rest</th></tr></thead><tbody>`;
+    d.l.forEach((x,i)=>{
+      h+=`<tr><td class="n">${i+1}</td><td class="ex">${x[0]}</td>`+
+         `<td class="sr">${x[1]}</td>`+
+         `<td class="rp"><b class="${x[2]==='10'?'x':''}">${x[2]}</b></td>`+
+         `<td class="rt">${x[3]}</td></tr>`;
     });
-    h+=`</tbody></table></div>`;
-  }
-  if(d.cardio) h+=`<div class="note"><b>Cardio.</b> ${d.cardio}</div>`;
-  if(d.note) h+=`<div class="note">${d.note}</div>`;
-
-  // ---- EAT ----
-  h+=`<div class="head eat"><h2>Food</h2><span class="sub">${d.flex?'flex day':`${d.tot.kcal} kcal planned`}</span></div>`;
-
-  if(d.flex){
-    h+=`<div class="flexday"><b>Flex day.</b>
-      <ul>
-        <li>150 g protein floor — non-negotiable</li>
-        <li>One unbudgeted meal, not a whole unbudgeted day</li>
-        <li>Ceiling ~3,500 kcal — you won't count it, you'll feel it</li>
-        <li>Alcohol comes out of the budget, not on top of it</li>
-      </ul>
-      ${d.flexnote?`<p style="margin-top:9px">${d.flexnote}</p>`:''}
-    </div>`;
+    h+=`</tbody></table>`;
   } else {
-    h+=`<div class="macros">
-      ${bar('kcal',d.tot.kcal,TARGET.kcal,'')}
-      ${bar('protein',d.tot.p,TARGET.p,'p')}
-      ${bar('fat',d.tot.f,TARGET.f,'f')}
-      ${bar('carbs',d.tot.c,TARGET.c,'c')}
-    </div>`;
-    h+=`<div class="card">`;
-    d.meals.forEach(m=>{
-      h+=`<div class="meal"><div class="mh"><h3>${m[0]}</h3><span class="mm">${m[1]}</span></div><ul class="items">`;
-      m[2].forEach(it=>{ h+=`<li><span>${it[0]}</span><span class="q">${it[1]}</span></li>`; });
-      h+=`</ul></div>`;
-    });
-    h+=`</div>`;
-    if(d.fnote) h+=`<div class="note eat">${d.fnote}</div>`;
+    h+=`<div class="off">${act==='sun'?'Rest day':d.v}</div>`;
   }
-
   document.getElementById('main').innerHTML=h;
 }
-render();
+draw();
 </script>

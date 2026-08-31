@@ -60,7 +60,9 @@ td.rp{width:34px}
 .leg{margin-top:22px}
 .leg table{font-family:'IBM Plex Mono',monospace;font-size:12px}
 .leg td{padding:7px 9px}
-.leg td:first-child{width:40px;font-weight:500}
+.leg td:first-child{width:52px;font-weight:500}
+.leg tr.dl td{background:#FBE9EC}
+.leg tr.dl td:nth-child(2){color:var(--hot);font-weight:500}
 
 @media(max-width:540px){
   th,td{padding:10px 7px}
@@ -79,6 +81,16 @@ td.rp{width:34px}
 <main class="wrap" id="main"></main>
 
 <div class="wrap leg">
+  <h2>Blocks</h2>
+  <table>
+    <tr><td>5–9</td><td>Accumulation 2</td><td>Aug 24 – Sep 27</td></tr>
+    <tr><td>10–11</td><td>Intensification 1</td><td>Sep 28 – Oct 11</td></tr>
+    <tr class="dl"><td>12</td><td>Deload</td><td>Oct 12 – Oct 18</td></tr>
+    <tr><td>13–17</td><td>Intensification 2</td><td>Oct 19 – Nov 22</td></tr>
+    <tr class="dl"><td>18</td><td>Deload</td><td>Nov 23 – Nov 29</td></tr>
+    <tr><td>19–20</td><td>Finish</td><td>Nov 30 – Dec 13</td></tr>
+  </table>
+
   <h2>RPE</h2>
   <table>
     <tr><td>10</td><td>0 reps left</td></tr>
@@ -89,7 +101,7 @@ td.rp{width:34px}
 </div>
 
 <script>
-const WEEK=5, TOTAL=20;
+const WEEK=6, TOTAL=20;
 
 const D={
 mon:{t:'Upper Push',v:'32 sets',l:[

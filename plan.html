@@ -53,6 +53,10 @@ td.rp{width:34px}
   background:#E9ECEF;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500}
 .rp b.x{background:var(--hot);color:#fff}
 
+.cd{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--mute);
+  background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:8px 9px;margin-bottom:8px}
+.cd::before{content:'cardio \00b7 ';color:var(--hot)}
 .off{background:var(--card);border:1px solid var(--line);border-radius:3px;
   padding:22px 14px;text-align:center;font-family:'IBM Plex Mono',monospace;
   font-size:13px;color:var(--mute)}
@@ -91,6 +95,14 @@ td.rp{width:34px}
     <tr><td>19–20</td><td>Finish</td><td>Nov 30 – Dec 13</td></tr>
   </table>
 
+  <h2>Run</h2>
+  <table>
+    <tr><td>7–9</td><td>3 km</td><td>6 × 400 m</td></tr>
+    <tr><td>10–13</td><td>4 km</td><td>8 × 400 m</td></tr>
+    <tr><td>14–17</td><td>5 km</td><td>8 × 400 m</td></tr>
+    <tr><td>18–20</td><td>5 km</td><td>hold</td></tr>
+  </table>
+
   <h2>RPE</h2>
   <table>
     <tr><td>10</td><td>0 reps left</td></tr>
@@ -104,7 +116,7 @@ td.rp{width:34px}
 const WEEK=6, TOTAL=20;
 
 const D={
-mon:{t:'Upper Push',v:'32 sets',l:[
+mon:{t:'Upper Push',v:'32 sets',c:'12k steps',l:[
 ['Incline barbell press','5 × 5–6','8','3 min'],
 ['Flat DB press','4 × 8–10','8','2 min'],
 ['Decline bench press','3 × 8–10','8','2 min'],
@@ -115,7 +127,7 @@ mon:{t:'Upper Push',v:'32 sets',l:[
 ['Cable crunch','3 × 12–15','9','90 s'],
 ['Seated calf raise','4 × 15–20','9','90 s']]},
 
-tue:{t:'Lower A',v:'28 sets',l:[
+tue:{t:'Lower A',v:'28 sets',c:'12k steps',l:[
 ['Back squat','5 × 5','8','3 min'],
 ['Bulgarian split squat','4 × 8–10 /leg','8','2 min'],
 ['Leg press','3 × 12','8','2 min'],
@@ -125,20 +137,25 @@ tue:{t:'Lower A',v:'28 sets',l:[
 ['Hip abduction','3 × 15–20','9','60 s'],
 ['Hanging leg raise','3 × 12–15','9','60 s']]},
 
-wed:{t:'Upper Pull',v:'30 sets',l:[
+wed:{t:'Upper Pull',v:'30 sets',c:'Swim 20–25 min easy · post-lift',l:[
 ['Pull-up','4 × 5–6','8','3 min'],
 ['Chest-supported row','5 × 8–10','8','2 min'],
 ['Single-arm DB row','3 × 10–12','8','90 s'],
 ['Lat pulldown','3 × 12','9','90 s'],
 ['Face pull','4 × 15–20','9','90 s'],
-['Reverse pec-deck','3 × 15','9','90 s'],
+['Cable reverse fly','3 × 15','9','90 s'],
 ['Cable lateral raise','3 × 15','9','90 s'],
 ['Incline DB curl','3 × 10–12','9','90 s'],
 ['Hammer curl','2 × 12','9','90 s']]},
 
-thu:{t:'Basketball',v:'60–90 min',l:[]},
+thu:{t:'Conditioning',v:'~25 min',c:'12k steps',l:[
+['Warm-up — walk + leg swings','5 min','—','—'],
+['400 m hard','6 × 400 m','8','90 s walk'],
+['Cool-down — easy walk','5 min','—','—'],
+['Alt A — steady run','3 km','6','—'],
+['Alt B — basketball','60–90 min','—','—']]},
 
-fri:{t:'Lower B',v:'28 sets',l:[
+fri:{t:'Lower B',v:'28 sets',c:'12k steps',l:[
 ['Romanian deadlift','5 × 6–8','8','3 min'],
 ['DB hip thrust','4 × 10–12','8','2 min'],
 ['Walking lunge','3 × 12 /leg','8','90 s'],
@@ -149,11 +166,11 @@ fri:{t:'Lower B',v:'28 sets',l:[
 ['Bent-over rear delt fly','3 × 20','9','60 s'],
 ['Cable woodchop','3 × 12 /side','8','60 s']]},
 
-sat:{t:'Upper Hypertrophy',v:'27 sets',l:[
+sat:{t:'Upper Hypertrophy',v:'27 sets',c:'12k steps',l:[
 ['Seated DB shoulder press','5 × 10–12','9','90 s'],
 ['Incline DB press','5 × 10–12','9','90 s'],
 ['Lateral raise (drop set last)','4 × 15','10','90 s'],
-['Reverse pec-deck','4 × 15','9','90 s'],
+['Chest-supported DB rear delt fly','4 × 15','9','90 s'],
 ['Cable fly — low pulley','1 × 15','9','90 s'],
 ['Cable fly — mid pulley','1 × 15','9','90 s'],
 ['Cable fly — high pulley','1 × 15','9','90 s'],
@@ -161,7 +178,7 @@ sat:{t:'Upper Hypertrophy',v:'27 sets',l:[
 ['Seated calf raise','3 × 20','9','90 s'],
 ['Cable curl ⇄ pushdown','3 × 12–15','9','90 s']]},
 
-sun:{t:'Rest',v:'',l:[]}
+sun:{t:'Rest',v:'',c:'Bike 45–60 min zone 2',l:[]}
 };
 
 const O=['mon','tue','wed','thu','fri','sat','sun'];
@@ -185,6 +202,7 @@ function draw(){
   [...rail.children].forEach((b,i)=>b.setAttribute('aria-selected',O[i]===act));
   const d=D[act];
   let h=`<h2>${d.t}${d.v?`<span>${d.v}</span>`:''}</h2>`;
+  if(d.c) h+=`<div class="cd">${d.c}</div>`;
   if(d.l.length){
     h+=`<table><thead><tr><th></th><th>Exercise</th><th>Sets × reps</th><th>RPE</th><th class="rt">Rest</th></tr></thead><tbody>`;
     d.l.forEach((x,i)=>{
